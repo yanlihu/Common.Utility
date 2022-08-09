@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace Common.Utility
 {
@@ -78,6 +79,28 @@ namespace Common.Utility
                 return ex.Message;
             }
             return strHTML;
+        }
+        /// <summary>
+        /// 下载图片到本地
+        /// </summary>
+        /// <param name="str">图片链接</param>
+        /// <param name="path">本地路径</param>
+        public static void SaveUrlPics(string[] str, string path)
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            foreach (var tmpstr in str)
+            {
+                try
+                {
+                    WebClient wc = new WebClient();
+                    wc.DownloadFile(tmpstr, path + tmpstr.Substring(tmpstr.LastIndexOf('/') + 1));
+                    Thread.Sleep(1000);
+                }
+                catch (Exception)
+                {
+                }
+            }
         }
     }
 }
